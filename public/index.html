@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hello!</title>
+    <title>Gemes. Meme games. Spread the meme.</title>
     <meta name="description" content="description"/>
     <meta name="author" content="author" />
     <meta name="keywords" content="keywords" />
@@ -43,9 +43,7 @@
 
     <input id="yourid"></input>
 
-    <h1></h1>
-
-    <div id="qrcode" style="opacity: 0.5"></div>
+    <div id="qrcode" style="display: none; opacity: 0.5"></div>
 
     <div id="canvas-container">
         <canvas id="canvas" width="2048" height="2048"></canvas>
@@ -53,6 +51,9 @@
 
     
     <script>
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+
     $(function() {
 
         // REFERRAL CODE
@@ -61,8 +62,6 @@
         $("#referredby").text(pathname.replace("/", ""));
 
         // DRAW MEME
-        var canvas = document.getElementById("canvas");
-        var ctx = canvas.getContext("2d");
 
         var img = new Image();
         img.src = 'toxic-system.jpg';
@@ -90,10 +89,19 @@
             generatedQRcode.onload = function() {
                 ctx.drawImage(generatedQRcode, 774, 774, 500, 500);
             };
+
+            ctx.font = '24px Helvetica';
+            ctx.fillStyle = 'white';
+            ctx.fillText('Hello, Canvas!', 50, 50);
         }
 
-
     });
+
+
+
+
+
+
 
     const inputElement = document.getElementById('yourid');
 
