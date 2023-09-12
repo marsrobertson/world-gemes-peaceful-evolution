@@ -60,39 +60,41 @@
         const pathname = window.location.pathname;
         console.log("Pathname: " + pathname);
         $("#referredby").text(pathname.replace("/", ""));
-
-
+        
         // DRAW MEME
         var canvas = document.getElementById("canvas");
         var ctx = canvas.getContext("2d");
 
         var img = new Image();
-        img.src = 'toxic-system-peaceful-evolution-resized.png';
-        img.onload = () => ctx.drawImage(img, 0, 0)
+        img.src = 'toxic-system.jpg';
+        img.onload = function(){
+            ctx.drawImage(img, 0, 0);
 
-        var img2 = new Image();
-        img2.src = 'gemes-rules.png';
-        img2.onload = () => ctx.drawImage(img2, 0, 1024)
-
-        // BLACK BACKGROUND FOR QR CODE
-        ctx.fillStyle = 'black';
-        ctx.fillRect(1024, 0, 1024, 1024);
-
-        ctx.fillStyle = 'white';
-        ctx.fillRect(1024 + 70, 70, 1024 - 140, 1024 - 140);
-
-        // QR CODE
-        qrcodeGLOBAL = new QRCode(document.getElementById("qrcode"), {
-            text: "http://jindo.dev.naver.com/collie",
-            width: 1024,
-            height: 1024,
-            correctLevel : QRCode.CorrectLevel.H
-        });
-
-        const generatedQRcode = $("#qrcode").find("img")[0];
-        generatedQRcode.onload = function() {
-            ctx.drawImage(generatedQRcode, 1024 + 140, 140, 1024 - 280, 1024 - 280);
+            draw_the_rest_on_top();
         };
+
+        function draw_the_rest_on_top() {
+            ctx.fillStyle = 'black';
+            ctx.fillRect(739, 739, 570, 570);
+
+            ctx.fillStyle = 'white';
+            ctx.fillRect(749, 749, 550, 550);
+
+            // QR CODE
+            qrcodeGLOBAL = new QRCode(document.getElementById("qrcode"), {
+                text: "http://jindo.dev.naver.com/collie",
+                width: 1024,
+                height: 1024,
+                correctLevel : QRCode.CorrectLevel.H
+            });
+
+            const generatedQRcode = $("#qrcode").find("img")[0];
+            generatedQRcode.onload = function() {
+                ctx.drawImage(generatedQRcode, 774, 774, 500, 500);
+            };
+        }
+
+
 
 
     });
