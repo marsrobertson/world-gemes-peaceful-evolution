@@ -37,8 +37,6 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" type="text/javascript"></script>
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js" integrity="sha256-xUHvBjJ4hahBW8qN9gceFBibSFUzbe9PNttUvehITzY=" crossorigin="anonymous"></script>
 
-
-
     <h1 class="font">Referred by <span id="referredby"></span></h1>
 
     <input id="yourid"></input>
@@ -89,18 +87,18 @@
             generatedQRcode.onload = function() {
                 ctx.drawImage(generatedQRcode, 774, 774, 500, 500);
             };
-
-            ctx.font = '24px Helvetica';
-            ctx.fillStyle = 'white';
-            ctx.fillText('Hello, Canvas!', 50, 50);
         }
 
     });
 
+    function write_text_on_top(text) {
+        ctx.fillStyle = 'black';
+        ctx.fillRect(50, 30, 200, 50);
 
-
-
-
+        ctx.font = '24px FucXed Caps Latin';
+        ctx.fillStyle = 'white';
+        ctx.fillText(text, 50, 50);
+    }
 
 
     const inputElement = document.getElementById('yourid');
@@ -109,6 +107,7 @@
         console.log('Input changed:', inputElement.value);
 
         qrcodeGLOBAL.makeCode(inputElement.value);
+        write_text_on_top(inputElement.value);
 
     }, 300));
 
