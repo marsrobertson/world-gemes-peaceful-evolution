@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>QR Code Generator</title>
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+</head>
+<body>
+    <!-- Create a canvas for displaying the QR code -->
+    <canvas id="qrcodeCanvas" width="200" height="200"></canvas>
+    <!-- Create a canvas for embedding the QR code -->
+    <canvas id="embeddedCanvas" width="400" height="400"></canvas>
+
+    <script>
+        
+// The text you want to encode in the QR code
+const textToEncode = 'https://www.example.com';
+
+// Get references to the canvases
+const qrCodeCanvas = document.getElementById('qrcodeCanvas');
+const embeddedCanvas = document.getElementById('embeddedCanvas');
+const qrCodeContext = qrCodeCanvas.getContext('2d');
+const embeddedContext = embeddedCanvas.getContext('2d');
+
+// Create a QRCode instance to generate the QR code
+const qr = new QRCode(qrCodeCanvas, {
+  text: textToEncode,
+  width: 200, // Set the size of the QR code
+  height: 200,
+});
+
+// Create an Image object from the QR code canvas
+const qrCodeImage = new Image();
+qrCodeImage.src = qrCodeCanvas.toDataURL('image/png');
+
+// Draw the QR code on the embedded canvas
+qrCodeImage.onload = function () {
+  embeddedContext.drawImage(qrCodeImage, 0, 0, 400, 400); // Adjust the size as needed
+};
+
+        
+    </script>
+</body>
+</html>

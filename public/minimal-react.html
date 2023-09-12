@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>React with JSX in Browser</title>
+<!-- Include React, ReactDOM and Babel from CDN -->
+<script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+</head>
+<body>
+
+<div id="root"></div>
+
+<script type="text/babel">
+  // Component1 receives a prop and displays it
+  function Component1({ message }) {
+    return (
+      <div>
+        <h2>Component 1</h2>
+        <p>Message: {message}</p>
+      </div>
+    );
+  }
+
+  // Component2 receives a prop and displays it
+  function Component2({ message }) {
+    return (
+      <div>
+        <h2>Component 2</h2>
+        <p>Message: {message}</p>
+      </div>
+    );
+  }
+
+  // App component contains Component1 and Component2 and passes a variable to them
+  function App() {
+    const message = "Hello from App component";
+
+    return (
+      <div>
+        <h1>Hello, React!</h1>
+        <Component1 message={message} />
+        <Component2 message={message} />
+      </div>
+    );
+  }
+
+  // Render the App component to the root div
+  ReactDOM.render(<App />, document.getElementById('root'));
+</script>
+
+</body>
+</html>
