@@ -73,10 +73,10 @@
 
         function draw_the_rest_on_top() {
             ctx.fillStyle = 'black';
-            ctx.fillRect(739, 739, 570, 570);
+            ctx.fillRect(739, 699, 570, 610);
 
             ctx.fillStyle = 'white';
-            ctx.fillRect(749, 749, 550, 550);
+            ctx.fillRect(749, 709, 550, 590);
 
             qrcodeGLOBAL = new QRCode(document.getElementById("qrcode"), {
                 text: "http://jindo.dev.naver.com/collie",
@@ -87,7 +87,7 @@
 
             const generatedQRcode = $("#qrcode").find("img")[0];
             generatedQRcode.onload = function() {
-                ctx.drawImage(generatedQRcode, 774, 774, 500, 500);
+                ctx.drawImage(generatedQRcode, 774, 734, 500, 500);
             };
         }
 
@@ -107,8 +107,8 @@
     inputElement.addEventListener('input', debounce(function() {
         console.log('Input changed:', inputElement.value);
 
-        qrcodeGLOBAL.makeCode(inputElement.value);
-        write_text_on_top(inputElement.value);
+        qrcodeGLOBAL.makeCode("https://gemes.world/" + inputElement.value);
+        write_text_on_top("gemes.world/" + inputElement.value);
 
     }, 300));
 
