@@ -27,6 +27,13 @@
         body {
             background-color: gray;
             text-align: center;
+
+            background-image: url('honeycomb.jpg'); /* Replace 'your-image.jpg' with your image file path */
+            background-size: cover; /* Cover the entire viewport */
+            background-position: center; /* Center the image horizontally and vertically */
+            background-repeat: no-repeat; /* Do not repeat the image */
+            background-attachment: fixed; /* Fixed background position even when scrolling */
+        }
         }
         input {
             background-color: #dadada;
@@ -60,6 +67,9 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" type="text/javascript"></script>
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js" integrity="sha256-xUHvBjJ4hahBW8qN9gceFBibSFUzbe9PNttUvehITzY=" crossorigin="anonymous"></script>
 
+    <br>
+    <br>
+
     <h1 class="font" style="display: none" id="referredbySection">Referred by: <span id="referredby"></span></h1>
     <h1 class="font">Your ID: 
         <input id="yourid" class="font" maxlength="20" autofocus pattern="^[a-zA-Z0-9_]+$" title="Only letters, digits, and underscores are allowed."></input>
@@ -70,7 +80,6 @@
     
     <br>
     <br>
-    <input id="shareurl" readonly></input>
 
     <!-- <img src="edit.svg" height="40" style="display: inline;"/> -->
     <!-- <button id="downloadButton">Save image</button> (or just right click to save the image) -->
@@ -87,6 +96,9 @@
 
     <p class="font">We use some cookies (legally)</p>
     <p class="font">Check the <a href="https://github.com/marsrobertson/world-gemes-peaceful-evolution">source code on GitHub</a></p>
+
+    <br>
+    <br>
 
     
     <script>
