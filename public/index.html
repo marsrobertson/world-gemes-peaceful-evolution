@@ -7,6 +7,19 @@
     <meta name="author" content="author" />
     <meta name="keywords" content="keywords" />
     <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+    <meta property="og:title" content="💎 💎 💎 Gemes. Meme games. Spread the meme."/>
+    <meta property="og:image" content="https://gemes.world/preview.jpg""/>
+    <meta property="og:site_name" content="This the signal you've been waiting for."/>
+    <meta property="og:description" content="The world is ready. #PeacefulEvolution"/>
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@genesisdotre">
+    <meta name="twitter:creator" content="@marsXrobertson">
+    <meta name="twitter:title" content="💎 💎 💎  Gemes. Meme games. Spread the meme.">
+    <meta name="twitter:description" content="This the signal you've been waiting for. The world is ready. #PeacefulEvolution">
+    <meta name="twitter:image" content="https://gemes.world/preview.jpg">
+
     <style type="text/css">
         /* reset */
         *,*::before,*::after{box-sizing:border-box;}*{margin:0;}body{line-height:1.5;-webkit-font-smoothing:antialiased;}img,picture,video,canvas,svg{display:block;max-width:100%;}input,button,textarea,select{font:inherit;}p,h1,h2,h3,h4,h5,h6{overflow-wrap:break-word;}#root,#__next{isolation:isolate;}
@@ -47,16 +60,17 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" type="text/javascript"></script>
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js" integrity="sha256-xUHvBjJ4hahBW8qN9gceFBibSFUzbe9PNttUvehITzY=" crossorigin="anonymous"></script>
 
-    <h1 class="font">Referred by: <span id="referredby"></span></h1>
+    <h1 class="font" style="display: none" id="referredbySection">Referred by: <span id="referredby"></span></h1>
     <h1 class="font">Your ID: 
         <input id="yourid" class="font" maxlength="20" autofocus pattern="^[a-zA-Z0-9_]+$" title="Only letters, digits, and underscores are allowed."></input>
     </h1>
     <br>
     <br>
-    <h3 class="font">Goal of the gemes is to spread the memes<br>Pick your id if you want</h3>
+    <h3 class="font">The goal of the gemes<br>is to spread the memes<br>Pick your id if you want<br>(or just continue sharing)</h3>
     
     <br>
     <br>
+    <input id="shareurl" readonly></input>
 
     <!-- <img src="edit.svg" height="40" style="display: inline;"/> -->
     <!-- <button id="downloadButton">Save image</button> (or just right click to save the image) -->
@@ -70,12 +84,17 @@
     <br>
     <br>
     <h1 class="font">Technical bits</h1>
-    <p class="font">Check the <a href="https://github.com/marsrobertson/world-gemes-peaceful-evolution">GitHub repository</a></p>
+
+    <p class="font">We use some cookies (legally)</p>
+    <p class="font">Check the <a href="https://github.com/marsrobertson/world-gemes-peaceful-evolution">source code on GitHub</a></p>
 
     
     <script>
     var canvas = document.getElementById("canvas");
     var ctx = canvas.getContext("2d");
+
+    var yourid;
+    var referredby;
 
     $(function() {
 
@@ -85,15 +104,14 @@
         if (pathname) {
             setCookie("referredby", pathname);
         }
+        referredby = getCookie("referredby");
+        if (referredby) {
+            $("#referredby").text(referredby);
+            $("#referredbySection").show();
+        }
 
-        // IN THE COOKIES
-        let youridCookie = getCookie("yourid");
-        let referredbyCookie = getCookie("referredby");
-
-        $("#yourid").val(youridCookie || "");
-
-        referredby = referredbyCookie ? referredbyCookie : "default";
-        $("#referredby").text(referredby);
+        yourid = getCookie("yourid");
+        $("#yourid").val(yourid || "");
 
         // DRAW MEME
         var img = new Image();
@@ -111,7 +129,7 @@
 
             // Sorry not sorry for using GLOBAL variables, but actually I want to use it in other places (trust me bro, I know what I'm doing)
             qrcodeGLOBAL = new QRCode(document.getElementById("qrcode"), {
-                text: "http://jindo.dev.naver.com/collie",
+                text: "https://gemes.world/" + (yourid || "") + (referredby ? ("?referredby=" + referredby) : ""),
                 width: 1024,
                 height: 1024,
                 correctLevel : QRCode.CorrectLevel.H
@@ -123,16 +141,17 @@
             };
 
             // Draw the 1st PART of THE URL
-            write_username_on_top("gemes.world/" + (youridCookie || ""));
+            write_username_on_top("gemes.world/" + (yourid || ""));
 
             // Draw the REFERRED BY
-            ctx.font = '24px FucXed Caps Latin';
-            ctx.fillStyle = 'black';
-            const text = "?referredby=" + referredby;
-            const textWidth = ctx.measureText(text).width; console.log(textWidth)
-            const offset = Math.ceil(textWidth);
-            
-            ctx.fillText(text, 1279 - offset, 1285);
+            if (referredby) {
+                ctx.font = '24px FucXed Caps Latin';
+                ctx.fillStyle = 'black';
+                const text = "?referredby=" + referredby;
+                const textWidth = ctx.measureText(text).width; console.log(textWidth)
+                const offset = Math.ceil(textWidth);
+                ctx.fillText(text, 1279 - offset, 1285);
+            }
         }
 
     });
@@ -155,14 +174,6 @@
         write_username_on_top("gemes.world/" + inputElement.value.toLowerCase());
 
     }, 500));
-   
-    // const downloadButton = document.getElementById('downloadButton');
-    // downloadButton.addEventListener('click', () => {
-    //     const link = document.createElement('a');
-    //     link.href = canvas.toDataURL('image/png'); // Convert canvas to data URL
-    //     link.download = 'meme-games-gemes.png'; // Set the download attribute
-    //     link.click(); // Simulate a click on the link to trigger download
-    // });    
 
     // UTILITY FUNCTIONS
     function getCookie(cookieName) {
