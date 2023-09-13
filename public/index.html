@@ -8,6 +8,7 @@
     <meta name="keywords" content="keywords" />
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <style type="text/css">
+        /* reset */
         *,*::before,*::after{box-sizing:border-box;}*{margin:0;}body{line-height:1.5;-webkit-font-smoothing:antialiased;}img,picture,video,canvas,svg{display:block;max-width:100%;}input,button,textarea,select{font:inherit;}p,h1,h2,h3,h4,h5,h6{overflow-wrap:break-word;}#root,#__next{isolation:isolate;}
 
         @font-face {
@@ -20,9 +21,7 @@
         .font {
             font-family: 'FucXed Caps Latin';
         }
-    </style>
 
-    <style>
         #canvas-container {
             overflow: hidden;
             width: 100%; /* Make sure it takes the full width of the screen */
@@ -32,17 +31,21 @@
             width: 100%; /* Set the canvas width to 100% of its container */
             height: auto; /* Automatically adjust the height to maintain aspect ratio */
         }
-    </style>    
+    </style>
+ 
   </head>
   <body>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" type="text/javascript"></script>
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js" integrity="sha256-xUHvBjJ4hahBW8qN9gceFBibSFUzbe9PNttUvehITzY=" crossorigin="anonymous"></script>
 
-    <h1 class="font">Referred by <span id="referredby"></span></h1>
+    <h1 class="font">Referred by: <span id="referredby"></span></h1>
+    <h1 class="font">Your ID: <span id="myid"></span> <img src="edit.svg" height="40" style="display: inline;"/></h1>
+
+    Choose your ID:<br>
 
     <input id="yourid" class="font"></input>
 
-    <button id="downloadButton">Save image</button>
+    <!-- <button id="downloadButton">Save image</button> (or just right click to save the image) -->
 
     <div id="qrcode" style="display: none; opacity: 0.5"></div>
 
@@ -57,25 +60,31 @@
 
     $(function() {
 
-        // REFERRAL CODE
+        // REFERRAL CODE (in the URL)
         let pathname = window.location.pathname;
         pathname = pathname.replace("/", ""); console.log("Pathname: " + pathname);
-        $("#referredby").text(pathname);
+        if (pathname) {
+            setCookie("referredby", pathname);
+        }
+
+        // IN THE COOKIES
+        let myidCookie = getCookie("myid");
+        let referredbyCookie = getCookie("referredby"); console.log("Cookies: " + myidCookie + " " + referredbyCookie);
+
+        referredby = referredbyCookie ? referredbyCookie : "mars";
+        $("#referredby").text(referredby);
 
         // DRAW MEME
-
         var img = new Image();
         img.src = 'toxic-system.jpg';
         img.onload = function(){
             ctx.drawImage(img, 0, 0);
-
             draw_the_rest_on_top();
         };
 
         function draw_the_rest_on_top() {
-            ctx.fillStyle = 'black';
+            ctx.fillStyle = 'black'; // so the QR code has nice boundary
             ctx.fillRect(739, 699, 570, 610);
-
             ctx.fillStyle = 'white';
             ctx.fillRect(749, 709, 550, 590);
 
@@ -92,10 +101,13 @@
                 ctx.drawImage(generatedQRcode, 774, 734, 500, 500);
             };
 
+            // Draw the 1st PART of THE URL
+            write_username_on_top("gemes.world/" + (myidCookie || ""));
+
             // Draw the REFERRED BY
             ctx.font = '24px FucXed Caps Latin';
             ctx.fillStyle = 'black';
-            const text = "referredby=" + pathname;
+            const text = "?referredby=" + referredby;
             const textWidth = ctx.measureText(text).width; console.log(textWidth)
             const offset = Math.ceil(textWidth);
             
@@ -104,7 +116,7 @@
 
     });
 
-    function write_text_on_top(text) {
+    function write_username_on_top(text) {
         ctx.fillStyle = 'white';
         ctx.fillRect(774, 1229, 500, 35);
 
@@ -113,15 +125,52 @@
         ctx.fillText(text, 774, 1259);
     }
 
-
     const inputElement = document.getElementById('yourid');
     inputElement.addEventListener('input', debounce(function() {
         console.log('Input changed:', inputElement.value);
 
-        qrcodeGLOBAL.makeCode("https://gemes.world/" + inputElement.value);
-        write_text_on_top("gemes.world/" + inputElement.value);
+        setCookie("myid", inputElement.value);
+        qrcodeGLOBAL.makeCode("https://gemes.world/" + inputElement.value + "?referredby=" + referredby);
+        write_username_on_top("gemes.world/" + inputElement.value);
 
     }, 500));
+   
+    // const downloadButton = document.getElementById('downloadButton');
+    // downloadButton.addEventListener('click', () => {
+    //     const link = document.createElement('a');
+    //     link.href = canvas.toDataURL('image/png'); // Convert canvas to data URL
+    //     link.download = 'meme-games-gemes.png'; // Set the download attribute
+    //     link.click(); // Simulate a click on the link to trigger download
+    // });    
+
+    // UTILITY FUNCTIONS
+    function getCookie(cookieName) {
+        const cookies = document.cookie.split(';');
+
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim(); // Remove leading/trailing whitespace
+            const cookieParts = cookie.split('=');
+            const name = cookieParts[0];
+            const value = cookieParts[1];
+
+            if (name === cookieName) {
+            // Return the cookie value if the name matches
+            return decodeURIComponent(value);
+            }
+        }
+
+        // Return null if the cookie is not found
+        return null;
+    }
+
+    function setCookie(name, value, daysToExpire=10000) {
+        const expirationDate = new Date();
+        expirationDate.setTime(expirationDate.getTime() + (daysToExpire * 24 * 60 * 60 * 1000));
+        
+        const cookie = `${name}=${encodeURIComponent(value)}; expires=${expirationDate.toUTCString()}; path=/`;
+
+        document.cookie = cookie;
+    }
 
     function debounce(func, delay) {
         let timeoutId;
@@ -133,14 +182,6 @@
             }, delay);
         };
     }
-    
-    const downloadButton = document.getElementById('downloadButton');
-    downloadButton.addEventListener('click', () => {
-        const link = document.createElement('a');
-        link.href = canvas.toDataURL('image/png'); // Convert canvas to data URL
-        link.download = 'meme-games-gemes.png'; // Set the download attribute
-        link.click(); // Simulate a click on the link to trigger download
-    });    
 
     </script>
 

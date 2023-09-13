@@ -40,8 +40,8 @@ app.use(function (req, res, next) {
 
     }
 
-    let test = req.cookies.myCookieName;
-    console.log("myCookieName = " + test);
+    // let test = req.cookies.myCookieName;
+    // console.log("myCookieName = " + test);
 
     next();
 });
