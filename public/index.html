@@ -41,6 +41,8 @@
 
     <input id="yourid"></input>
 
+    <button id="downloadButton">Save image</button>
+
     <div id="qrcode" style="display: none; opacity: 0.5"></div>
 
     <div id="canvas-container">
@@ -102,7 +104,6 @@
 
 
     const inputElement = document.getElementById('yourid');
-
     inputElement.addEventListener('input', debounce(function() {
         console.log('Input changed:', inputElement.value);
 
@@ -121,6 +122,15 @@
             }, delay);
         };
     }
+    
+    const downloadButton = document.getElementById('downloadButton');
+    downloadButton.addEventListener('click', () => {
+        const link = document.createElement('a');
+        link.href = canvas.toDataURL('image/png'); // Convert canvas to data URL
+        link.download = 'meme-games-gemes.png'; // Set the download attribute
+        link.click(); // Simulate a click on the link to trigger download
+    });    
+
     </script>
 
   </body>
