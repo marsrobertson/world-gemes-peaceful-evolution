@@ -78,6 +78,7 @@
             ctx.fillStyle = 'white';
             ctx.fillRect(749, 709, 550, 590);
 
+            // Sorry not sorry for using GLOBAL variables, but actually I want to use it in other places (trust me bro, I know what I'm doing)
             qrcodeGLOBAL = new QRCode(document.getElementById("qrcode"), {
                 text: "http://jindo.dev.naver.com/collie",
                 width: 1024,
@@ -94,12 +95,12 @@
     });
 
     function write_text_on_top(text) {
-        ctx.fillStyle = 'black';
-        ctx.fillRect(50, 30, 200, 50);
+        ctx.fillStyle = 'white';
+        ctx.fillRect(759, 1259, 500, 30);
 
         ctx.font = '24px FucXed Caps Latin';
-        ctx.fillStyle = 'white';
-        ctx.fillText(text, 50, 50);
+        ctx.fillStyle = 'black';
+        ctx.fillText(text, 769, 1279);
     }
 
 
