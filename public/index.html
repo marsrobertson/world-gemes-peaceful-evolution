@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Gemes. Meme games. Spread the meme.</title>
+    <title>Meme games. Gemes. Spread the meme.</title>
     <meta name="description" content="description"/>
     <meta name="author" content="author" />
     <meta name="keywords" content="keywords" />
@@ -16,7 +16,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@genesisdotre">
     <meta name="twitter:creator" content="@marsXrobertson">
-    <meta name="twitter:title" content="💎 💎 💎  Gemes. Meme games. Spread the meme.">
+    <meta name="twitter:title" content="💎 💎 💎 Gemes. Meme games. Spread the meme.">
     <meta name="twitter:description" content="This the signal you've been waiting for. The world is ready.">
     <meta name="twitter:image" content="https://gemes.world/preview-stripes.jpg">
 
@@ -80,6 +80,7 @@
         body {
             background-color: gray;
             text-align: center;
+            padding: 20px;
         }
 
         input {
@@ -100,6 +101,9 @@
         .left {
             text-align: left;
         }
+        .padding-left {
+            padding-left: 10px;
+        }
 
         #canvas-container {
             overflow: hidden;
@@ -111,6 +115,22 @@
             width: 100%; /* Set the canvas width to 100% of its container */
             height: auto; /* Automatically adjust the height to maintain aspect ratio */
         }
+
+
+        .container {
+            display: flex;
+            width: 100%;
+            padding-left: 10px;
+        }
+        #copy {
+            width: 24px; /* Your fixed width */
+            margin-right: 8px; /* Optional spacing between the icon and the input */
+        }
+        #shareURL {
+            flex-grow: 1; /* Makes the input take up the remaining space */
+            width: 0; /* Ensures it starts with zero width and grows as needed */
+            max-width: 400px;
+        }
     </style>
  
   </head>
@@ -121,8 +141,8 @@
     <br>
     <br>
 
-    <h1 class="font left" style="display: none" id="referredbySection">Referred by: <span id="referredby"></span></h1>
-    <h1 class="font left">Your ID: 
+    <h1 class="font left padding-left" style="display: none" id="referredbySection">Referred by: <span id="referredby"></span></h1>
+    <h1 class="font left padding-left">Your ID: 
         <input id="yourid" class="font" maxlength="20" autofocus pattern="^[a-zA-Z0-9_]+$" title="Only letters, digits, and underscores are allowed."></input>
     </h1>
     <br>
@@ -130,7 +150,7 @@
     <h3 class="font">The goal of the gemes<br>is to spread the memes<br>Pick your id if you want<br>(or just continue sharing)</h3>
     
     <br>
-    <br>
+
 
     <!-- <img src="edit.svg" height="40" style="display: inline;"/> -->
     <!-- <button id="downloadButton">Save image</button> (or just right click to save the image) -->
@@ -142,6 +162,12 @@
     </div>
 
     <br>
+    <p class="font left" style="padding-left: 10px;">Save the image or share the URL</p>
+    <div class="container">
+        <input readonly id="shareURL" class="font" style="display: inline; padding: 5px;"></input>
+        <a href id="copy"><img src="copy.png" height="25" style="display: inline; position: relative; top: 8px;"></a> 
+    </div>
+
     <br>
     <h1 class="font">Technical bits</h1>
 
@@ -175,6 +201,9 @@
 
         yourid = getCookie("yourid");
         $("#yourid").val(yourid || "");
+
+        let shareURL = "https://gemes.world/" + (yourid || "") + (referredby ? "?referredby=" + referredby : "");
+        $("#shareURL").val(shareURL);
 
         // DRAW MEME
         var img = new Image();
@@ -236,7 +265,16 @@
         qrcodeGLOBAL.makeCode("https://gemes.world/" + inputElement.value.toLowerCase() + "?referredby=" + referredby);
         write_username_on_top("gemes.world/" + inputElement.value.toLowerCase());
 
-    }, 500));
+        let shareURL = "https://gemes.world/" + inputElement.value + (referredby ? "?referredby=" + referredby : "");
+        $("#shareURL").val(shareURL);
+
+    }, 1000));
+
+    $("#copy").on("click", function() {
+        navigator.clipboard.writeText($("#shareURL").val());
+
+        return false;
+    })
 
     // UTILITY FUNCTIONS
     function getCookie(cookieName) {
