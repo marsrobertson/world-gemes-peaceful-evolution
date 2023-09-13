@@ -48,15 +48,16 @@ const supabaseURL = process.env.SUPABASE_URL;
 const supabaseKEY = process.env.SUPABASE_KEY;
 const supabase = createClient(supabaseURL, supabaseKEY);
 
-// app.get('/products', async (req, res) => {
-//     const {data, error} = await supabase
-//         .from('products')
-//         .select()
-//     res.send(data);
-// });
+app.get('/products', async (req, res) => {
+    const {data, error} = await supabase
+        .from('products')
+        .select()
+    res.send(data);
+});
 
-app.get('/:id', (req, res) => {
+app.get('/:id', async (req, res) => {
     const id = req.params.id;
+    const referredby = req.query.referredby
 
     const clientIp = req.clientIp;
     const userAgent = req.headers['user-agent'];
@@ -64,8 +65,20 @@ app.get('/:id', (req, res) => {
     const hashedUserAgent = hashData(userAgent);
     const hashedIP = hashData(clientIp)
 
-    console.log(`ID: ${id} IP: ${hashedIP} User Agent: ${hashedUserAgent}`);
-    
+    //  console.log(`ID: ${id} IP: ${hashedIP} User Agent: ${hashedUserAgent}`);
+
+    const {error} = await supabase
+        .from('referrals')
+        .insert({
+            urlhit: id,
+            referredby: referredby,
+            iphash: hashedIP,
+            useragenthash: hashedUserAgent
+        })
+    if (error) {
+        console.error(error)
+    }
+
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 

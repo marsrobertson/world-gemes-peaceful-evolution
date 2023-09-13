@@ -24,15 +24,62 @@
         /* reset */
         *,*::before,*::after{box-sizing:border-box;}*{margin:0;}body{line-height:1.5;-webkit-font-smoothing:antialiased;}img,picture,video,canvas,svg{display:block;max-width:100%;}input,button,textarea,select{font:inherit;}p,h1,h2,h3,h4,h5,h6{overflow-wrap:break-word;}#root,#__next{isolation:isolate;}
 
+        /* Number 7: https://alvarotrigo.com/blog/animated-backgrounds-css/ */
+        @-webkit-keyframes bg-scrolling-reverse {
+          100% {
+            background-position: 50px 50px;
+          }
+        }
+        @-moz-keyframes bg-scrolling-reverse {
+          100% {
+            background-position: 50px 50px;
+          }
+        }
+        @-o-keyframes bg-scrolling-reverse {
+          100% {
+            background-position: 50px 50px;
+          }
+        }
+        @keyframes bg-scrolling-reverse {
+          100% {
+            background-position: 50px 50px;
+          }
+        }
+        @-webkit-keyframes bg-scrolling {
+          0% {
+            background-position: 50px 50px;
+          }
+        }
+        @-moz-keyframes bg-scrolling {
+          0% {
+            background-position: 50px 50px;
+          }
+        }
+        @-o-keyframes bg-scrolling {
+          0% {
+            background-position: 50px 50px;
+          }
+        }
+        @keyframes bg-scrolling {
+          0% {
+            background-position: 50px 50px;
+          }
+        }
+        body {
+            background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAIAAACRXR/mAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAABnSURBVHja7M5RDYAwDEXRDgmvEocnlrQS2SwUFST9uEfBGWs9c97nbGtDcquqiKhOImLs/UpuzVzWEi1atGjRokWLFi1atGjRokWLFi1atGjRokWLFi1af7Ukz8xWp8z8AAAA//8DAJ4LoEAAlL1nAAAAAElFTkSuQmCC") repeat 0 0;
+            -webkit-animation: bg-scrolling-reverse 3s infinite;
+            -moz-animation: bg-scrolling-reverse 3s infinite;
+            -o-animation: bg-scrolling-reverse 3s infinite;
+            animation: bg-scrolling-reverse 3s infinite;
+            -webkit-animation-timing-function: linear;
+            -moz-animation-timing-function: linear;
+            -o-animation-timing-function: linear;
+            animation-timing-function: linear;
+        }
+
         body {
             background-color: gray;
             text-align: center;
-
-            background-image: url('honeycomb.jpg'); /* Replace 'your-image.jpg' with your image file path */
-            background-size: cover; /* Cover the entire viewport */
-            background-position: center; /* Center the image horizontally and vertically */
-            background-repeat: no-repeat; /* Do not repeat the image */
-            background-attachment: fixed; /* Fixed background position even when scrolling */
         }
 
         input {
@@ -50,10 +97,14 @@
         .font {
             font-family: 'FucXed Caps Latin';
         }
+        .left {
+            text-align: left;
+        }
 
         #canvas-container {
             overflow: hidden;
             width: 100%; /* Make sure it takes the full width of the screen */
+            padding: 0 10px;
         }
 
         #canvas {
@@ -70,8 +121,8 @@
     <br>
     <br>
 
-    <h1 class="font" style="display: none" id="referredbySection">Referred by: <span id="referredby"></span></h1>
-    <h1 class="font">Your ID: 
+    <h1 class="font left" style="display: none" id="referredbySection">Referred by: <span id="referredby"></span></h1>
+    <h1 class="font left">Your ID: 
         <input id="yourid" class="font" maxlength="20" autofocus pattern="^[a-zA-Z0-9_]+$" title="Only letters, digits, and underscores are allowed."></input>
     </h1>
     <br>
