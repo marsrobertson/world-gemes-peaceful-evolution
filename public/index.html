@@ -11,6 +11,15 @@
         /* reset */
         *,*::before,*::after{box-sizing:border-box;}*{margin:0;}body{line-height:1.5;-webkit-font-smoothing:antialiased;}img,picture,video,canvas,svg{display:block;max-width:100%;}input,button,textarea,select{font:inherit;}p,h1,h2,h3,h4,h5,h6{overflow-wrap:break-word;}#root,#__next{isolation:isolate;}
 
+        body {
+            background-color: gray;
+            text-align: center;
+        }
+        input {
+            background-color: #dadada;
+            border: 0;
+        }
+
         @font-face {
             font-family: 'FucXed Caps Latin';
             src: url('fonts/fucxedcapslatin.otf') format('opentype'),
@@ -39,12 +48,14 @@
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js" integrity="sha256-xUHvBjJ4hahBW8qN9gceFBibSFUzbe9PNttUvehITzY=" crossorigin="anonymous"></script>
 
     <h1 class="font">Referred by: <span id="referredby"></span></h1>
-    <h1 class="font">Your ID: <span id="myid"></span> <img src="edit.svg" height="40" style="display: inline;"/></h1>
+    <h1 class="font">Your ID: 
+        <input id="yourid" class="font" maxlength="20" autofocus pattern="^[a-zA-Z0-9_]+$" title="Only letters, digits, and underscores are allowed."></input>
+    </h1>
+    
+    <br>
+    <br>
 
-    Choose your ID:<br>
-
-    <input id="yourid" class="font"></input>
-
+    <!-- <img src="edit.svg" height="40" style="display: inline;"/> -->
     <!-- <button id="downloadButton">Save image</button> (or just right click to save the image) -->
 
     <div id="qrcode" style="display: none; opacity: 0.5"></div>
@@ -52,6 +63,11 @@
     <div id="canvas-container">
         <canvas id="canvas" width="2048" height="2048"></canvas>
     </div>
+
+    <br>
+    <br>
+    <h1 class="font">Technical bits</h1>
+    <p class="font">Check the <a href="https://github.com/marsrobertson/world-gemes-peaceful-evolution">GitHub repository</a></p>
 
     
     <script>
@@ -68,10 +84,12 @@
         }
 
         // IN THE COOKIES
-        let myidCookie = getCookie("myid");
-        let referredbyCookie = getCookie("referredby"); console.log("Cookies: " + myidCookie + " " + referredbyCookie);
+        let youridCookie = getCookie("yourid");
+        let referredbyCookie = getCookie("referredby");
 
-        referredby = referredbyCookie ? referredbyCookie : "mars";
+        $("#yourid").val(youridCookie || "");
+
+        referredby = referredbyCookie ? referredbyCookie : "default";
         $("#referredby").text(referredby);
 
         // DRAW MEME
@@ -102,7 +120,7 @@
             };
 
             // Draw the 1st PART of THE URL
-            write_username_on_top("gemes.world/" + (myidCookie || ""));
+            write_username_on_top("gemes.world/" + (youridCookie || ""));
 
             // Draw the REFERRED BY
             ctx.font = '24px FucXed Caps Latin';
@@ -117,8 +135,8 @@
     });
 
     function write_username_on_top(text) {
-        ctx.fillStyle = 'white';
-        ctx.fillRect(774, 1229, 500, 35);
+        ctx.fillStyle = 'white'; // Need to clear first
+        ctx.fillRect(774, 1229, 525, 35);
 
         ctx.font = '24px FucXed Caps Latin';
         ctx.fillStyle = 'black';
@@ -129,9 +147,9 @@
     inputElement.addEventListener('input', debounce(function() {
         console.log('Input changed:', inputElement.value);
 
-        setCookie("myid", inputElement.value);
-        qrcodeGLOBAL.makeCode("https://gemes.world/" + inputElement.value + "?referredby=" + referredby);
-        write_username_on_top("gemes.world/" + inputElement.value);
+        setCookie("yourid", inputElement.value.toLowerCase());
+        qrcodeGLOBAL.makeCode("https://gemes.world/" + inputElement.value.toLowerCase() + "?referredby=" + referredby);
+        write_username_on_top("gemes.world/" + inputElement.value.toLowerCase());
 
     }, 500));
    

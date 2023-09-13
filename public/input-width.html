@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expanding Text Input</title>
+    <style>
+        /* Basic styles for the input container */
+        .input-container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Styles for the expanding text input field */
+        input[type="text"] {
+            width: auto; /* Allow the input to expand */
+            min-width: 100px; /* Minimum width */
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="input-container">
+        <input type="text" id="expanding-input" placeholder="Type here...">
+    </div>
+    <script>
+        // Get the text input element
+        const expandingInput = document.getElementById('expanding-input');
+
+        // Function to update input width based on its content
+        function updateInputWidth() {
+            const textLength = expandingInput.value.length;
+
+            console.log(textLength);
+
+            const minWidth = 100; // Minimum width
+            const maxWidth = 400; // Maximum width (adjust as needed)
+
+            // Calculate the new width based on content length, within min and max limits
+            const newWidth = Math.min(maxWidth, Math.max(minWidth, textLength * 10));
+
+            // Set the input's width
+            expandingInput.style.width = newWidth + 'px';
+        }
+
+        // Add an event listener for input changes
+        expandingInput.addEventListener('input', updateInputWidth);
+
+        // Initial call to set the input's width based on placeholder text
+        updateInputWidth();
+    </script>
+</body>
+</html>
