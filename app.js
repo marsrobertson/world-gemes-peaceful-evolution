@@ -17,9 +17,11 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(requestIp.mw());
 
-// set a cookie
 app.use(function (req, res, next) {
-    // check if client sent cookie
+
+    const path = req.path;
+    console.log('Requested URL:', path);
+
     var cookieMYID = req.cookies.myid;
     if (cookieMYID === undefined) {
     //   var randomNumber=Math.random().toString();
@@ -38,6 +40,8 @@ app.use(function (req, res, next) {
 
     }
 
+    let test = req.cookies.myCookieName;
+    console.log("myCookieName = " + test);
 
     next();
 });
