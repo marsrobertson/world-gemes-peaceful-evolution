@@ -5,7 +5,6 @@ require('dotenv').config();
 
 const { createClient } = require('@supabase/supabase-js');
 const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
 const requestIp = require('request-ip');
 
 const app = express();
@@ -13,53 +12,48 @@ const port = 3000;
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-app.use(cookieParser());
 app.use(requestIp.mw());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-app.use(function (req, res, next) {
+// app.use(function (req, res, next) {
+//     const path = req.path;
+//     console.log('Requested URL:', path);
+//     var cookieMYID = req.cookies.myid;
+//     if (cookieMYID === undefined) {
+//     //   var randomNumber=Math.random().toString();
+//     //   randomNumber=randomNumber.substring(2,randomNumber.length);
+//     //   res.cookie('cookieName',randomNumber, { maxAge: 900000, httpOnly: true });
+//     //   console.log('cookie created successfully');
+//     } else {
+//       // yes, cookie was already present 
+//       //console.log('cookie exists', cookie);
+//     } 
 
-    const path = req.path;
-    console.log('Requested URL:', path);
+//     let cookieREFERREDBY = req.cookies.referredby;
+//     if (cookieREFERREDBY === undefined) {
 
-    var cookieMYID = req.cookies.myid;
-    if (cookieMYID === undefined) {
-    //   var randomNumber=Math.random().toString();
-    //   randomNumber=randomNumber.substring(2,randomNumber.length);
-    //   res.cookie('cookieName',randomNumber, { maxAge: 900000, httpOnly: true });
-    //   console.log('cookie created successfully');
-    } else {
-      // yes, cookie was already present 
-      //console.log('cookie exists', cookie);
-    } 
+//     } else {
 
-    let cookieREFERREDBY = req.cookies.referredby;
-    if (cookieREFERREDBY === undefined) {
+//     }
 
-    } else {
+//     // let test = req.cookies.myCookieName;
+//     // console.log("myCookieName = " + test);
 
-    }
-
-    // let test = req.cookies.myCookieName;
-    // console.log("myCookieName = " + test);
-
-    next();
-});
+//     next();
+// });
 
 
 const supabaseURL = process.env.SUPABASE_URL;
 const supabaseKEY = process.env.SUPABASE_KEY;
 const supabase = createClient(supabaseURL, supabaseKEY);
 
-console.log("From .env: " + supabaseURL + " " + supabaseKEY);
-
-app.get('/products', async (req, res) => {
-    const {data, error} = await supabase
-        .from('products')
-        .select()
-    res.send(data);
-});
+// app.get('/products', async (req, res) => {
+//     const {data, error} = await supabase
+//         .from('products')
+//         .select()
+//     res.send(data);
+// });
 
 app.get('/:id', (req, res) => {
     const id = req.params.id;
